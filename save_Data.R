@@ -91,7 +91,7 @@ country_level_data <- full_join(country_level, offers_country) |>
 
 
 # We need to check if communes are all in our data
-current_communes <- "https://is.gd/lux_communes" |>
+current_communes <- "https://b-rodrigues.github.io/list_communes/" |>
   rvest::read_html() |>
   rvest::html_table() |>
   purrr::pluck(2) |>
@@ -104,7 +104,7 @@ current_communes <- "https://is.gd/lux_communes" |>
 setdiff(unique(commune_level_data$locality), current_communes$commune)
 
 # We need former communes
-former_communes <- "https://is.gd/lux_former_communes" |>
+former_communes <- "https://b-rodrigues.github.io/former_communes/" |>
   rvest::read_html() |>
   rvest::html_table() |>
   purrr::pluck(3) |>
@@ -134,3 +134,4 @@ setdiff(unique(commune_level_data$locality), communes)
 # you may need to create the `datasets` folder first
 write.csv(commune_level_data, "datasets/commune_level_data.csv", row.names = TRUE)
 write.csv(country_level_data, "datasets/country_level_data.csv", row.names = TRUE)
+
