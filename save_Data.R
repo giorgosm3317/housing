@@ -21,7 +21,7 @@ raw_data <- map(
   ~read_clean(raw_data,
               skip = 10,
               sheet = .)
-) |>
+                   ) |>
   bind_rows() |>
   clean_names()
 
@@ -59,7 +59,7 @@ raw_data <- raw_data |>
          locality = ifelse(grepl("P.tange", locality),
                            "Pétange",
                            locality)
-  ) |>
+         ) |>
   mutate(across(starts_with("average"), as.numeric))
 
 # Check if missing data
@@ -73,8 +73,8 @@ raw_data <- raw_data |>
 
 #Keep commune level data
 commune_level_data <- raw_data |>
-  filter(!grepl("nationale|offres", locality),
-         !is.na(locality))
+    filter(!grepl("nationale|offres", locality),
+           !is.na(locality))
 
 # Keep country level data
 country_level <- raw_data |>
@@ -91,7 +91,7 @@ country_level_data <- full_join(country_level, offers_country) |>
 
 
 # We need to check if communes are all in our data
-current_communes <- "https://b-rodrigues.github.io/list_communes/" |>
+current_communes <- "https://is.gd/lux_communes" |>
   rvest::read_html() |>
   rvest::html_table() |>
   purrr::pluck(2) |>
@@ -104,7 +104,7 @@ current_communes <- "https://b-rodrigues.github.io/list_communes/" |>
 setdiff(unique(commune_level_data$locality), current_communes$commune)
 
 # We need former communes
-former_communes <- "https://b-rodrigues.github.io/former_communes/" |>
+former_communes <- "https://is.gd/lux_former_communes" |>
   rvest::read_html() |>
   rvest::html_table() |>
   purrr::pluck(3) |>
@@ -134,4 +134,3 @@ setdiff(unique(commune_level_data$locality), communes)
 # you may need to create the `datasets` folder first
 write.csv(commune_level_data, "datasets/commune_level_data.csv", row.names = TRUE)
 write.csv(country_level_data, "datasets/country_level_data.csv", row.names = TRUE)
-
